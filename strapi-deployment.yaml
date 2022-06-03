@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: strapi-config
+  
+data:
+  POSTGRES_CLIENT: "postgres"
+  POSTGRES_DB: "strapi"
+  POSTGRES_USER: "strapi"
+  POSTGRES_PASSWORD: "strapi"
+  POSTGRES_HOST: "strapi"
+  POSTGRES_PORT: "5433"
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: strapi-sc
+provisioner: efs.csi.aws.com
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: strapi-pv1
+spec:
+  capacity:
+    storage: 2Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: strapi-sc
+  mountOptions:
+    - tls
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: fs-05d037f96702fa945
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: strapi-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: strapi-sc
+  resources:
+    requests:
+      storage: 2Gi
+      
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: strapi
+ labels:
+   app: strapi
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+     app: strapi
+ template:
+   metadata:
+     labels:
+       app: strapi
+   spec:
+     containers:
+     - name: strapi
+       image: strapi/strapi:latest
+       imagePullPolicy: "IfNotPresent"
+       ports:
+         - containerPort: 1337
+       envFrom:
+         - configMapRef:
+             name: strapi-config
+       volumeMounts:
+         - mountPath: /srv/app
+           name: strapi
+     volumes:
+       - name: strapi
+         persistentVolumeClaim:
+           claimName: strapi-claim
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: strapi
+
+spec:
+  ports:
+  - name: strapi
+    port: 1337
+    targetPort: 1337
+
+  selector:
+    app: strapi
+
+  type: LoadBalancer
