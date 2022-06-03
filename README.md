@@ -1,3 +1,11 @@
+JENKINS
+Plugins to install in jenkins
+1. docker
+2. docker pipeline
+3. ssh pipeline step
+4. kubernetes continues deployment
+
+
 # 🚀 Getting started with Strapi
 
 Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/developer-docs/latest/developer-resources/cli/CLI.html) (CLI) which lets you scaffold and manage your project in seconds.
