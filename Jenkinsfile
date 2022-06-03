@@ -53,7 +53,7 @@ pipeline {
    
     stage("Completed") {
         steps {
-            echo "Deployment Completed to the ${targetK8SCluster} environment."
+            echo "Deployment Completed to    the ${targetK8SCluster} environment."
         }
     }
    
