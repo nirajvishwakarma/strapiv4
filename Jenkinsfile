@@ -7,7 +7,7 @@ pipeline {
   agent any
     
   environment {
-    registry = "817141239014.dkr.ecr.us-east-1.amazonaws.com/jhook-docker"
+    registry = "817141239014.dkr.ecr.us-east-1.amazonaws.com/strapiv4"
   }
   
   stages {
