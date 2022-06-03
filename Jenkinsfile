@@ -50,66 +50,7 @@ pipeline {
         }
       }
     }
-
-#    stage('Interactive') {
-#
-#      agent any
-#
-#      steps {
-#        script {
-#          timeout ( time: 2, unit: "HOURS" ) {
-#            userAns = input(
-#              message: "Where to deploy to?",
-#              parameters: [choice(choices: ['dev', 'sit', 'demo', 'prod'],
-#              description: 'k8s env',
-#              name: 'deployTo')]
-#            )
-#          }
-#
-#          switch(userAns) {
-#            case ["dev", "sit"]:
-#              targetK8SCluster = "dev"
-#              break
-#            case ["demo", "prod"]:
-#              targetK8SCluster = "prod"
-#              break
-#            default:
-#              error("Unknown error")
-#          }
-#
-#          targetK8SEnv = userAns
-#
-#          currentBuild.displayName = "${env.BUILD_ID}-${targetK8SEnv}-${env.TAG_NAME}"
-#        }
-#      }
-#    }
-#    
-#    
-#    stage ('K8S Deploy') {
-#        parallel {
-#                stage('deploy to development') {
-#                    when {
-#                      expression { targetK8SCluster == "dev" }
-#                    }
-#                    steps {
-#                        sh 'aws eks --region us-east-1 update-kubeconfig --name WIM-dev'
-#                        kubernetesDeploy(configs: "k8s-spring-boot-deployment.yml", kubeconfigId: "WIM-dev")
-#                    }
-#                }
-#                stage('deploy to production') {
-#                    when {
-#                        expression { targetK8SCluster == "prod" }
-#                    }
-#                    steps {
-#                        sh 'aws eks --region us-east-1 update-kubeconfig --name WIM-prod'
-#           	            kubernetesDeploy(configs: "k8s-spring-boot-deployment.yml", kubeconfigId: "WIM-prod")
-#                    }
-#                }
-#            }
-#    }
-#    
-#    
-#    
+   
     stage("Completed") {
         steps {
             echo "Deployment Completed to the ${targetK8SCluster} environment."
