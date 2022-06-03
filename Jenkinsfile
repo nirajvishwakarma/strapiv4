@@ -93,8 +93,8 @@ pipeline {
                     }
                     steps {
                         sh 'aws eks --region us-east-1 update-kubeconfig --name WIM-dev'
-                        kubernetesDeploy(configs: "pg-deployment.yml", kubeconfigId: "WIM-dev")
-                        kubernetesDeploy(configs: "strapi-deployment.yml", kubeconfigId: "WIM-dev")
+                        kubernetesDeploy(configs: "pg-deployment.yaml", kubeconfigId: "WIM-dev")
+                        kubernetesDeploy(configs: "strapi-deployment.yaml", kubeconfigId: "WIM-dev")
                     }
                 }
                 stage('deploy to production') {
@@ -103,8 +103,8 @@ pipeline {
                     }
                     steps {
                         sh 'aws eks --region us-east-1 update-kubeconfig --name WIM-prod'
-           	            kubernetesDeploy(configs: "pg-deployment.yml", kubeconfigId: "WIM-prod")
-                        kubernetesDeploy(configs: "strapi-deployment.yml", kubeconfigId: "WIM-prod")
+           	            kubernetesDeploy(configs: "pg-deployment.yaml", kubeconfigId: "WIM-prod")
+                        kubernetesDeploy(configs: "strapi-deployment.yaml", kubeconfigId: "WIM-prod")
                     }
                 }
             }
