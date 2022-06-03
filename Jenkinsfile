@@ -46,7 +46,7 @@ pipeline {
     stage ("Docker run") {
       steps {
         script {
-          sh 'docker run -d --rm --name strapi_container 817141239014.dkr.ecr.us-east-1.amazonaws.com/strapiv4:latest'
+          sh 'docker run -d -p 1337:1337 --rm --name strapi_container 817141239014.dkr.ecr.us-east-1.amazonaws.com/strapiv4:latest'
         }
       }
     }
