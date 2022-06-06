@@ -92,7 +92,7 @@ pipeline {
                       expression { targetK8SCluster == "dev" }
                     }
                     steps {
-                        sh 'aws eks --region us-east-1 update-kubeconfig --name WIM-dev'
+                        sh 'aws eks --region ap-south-1 update-kubeconfig --name WIM-dev'
                         kubernetesDeploy(configs: "pg-deployment.yaml", kubeconfigId: "WIM-dev")
                         kubernetesDeploy(configs: "strapi-deployment.yaml", kubeconfigId: "WIM-dev")
                     }
@@ -102,7 +102,7 @@ pipeline {
                         expression { targetK8SCluster == "prod" }
                     }
                     steps {
-                        sh 'aws eks --region us-east-1 update-kubeconfig --name WIM-prod'
+                        sh 'aws eks --region ap-south-1 update-kubeconfig --name WIM-prod'
            	            kubernetesDeploy(configs: "pg-deployment.yaml", kubeconfigId: "WIM-prod")
                         kubernetesDeploy(configs: "strapi-deployment.yaml", kubeconfigId: "WIM-prod")
                     }
