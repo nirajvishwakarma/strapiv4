@@ -7,7 +7,7 @@ pipeline {
   agent any
     
   environment {
-    registry = "817141239014.dkr.ecr.us-east-1.amazonaws.com/strapiv4"
+    registry = "276304551001.dkr.ecr.ap-south-1.amazonaws.com/strapiv4"
   }
   
   stages {
@@ -29,8 +29,8 @@ pipeline {
     stage ("Docker upload") {
       steps {
         script {
-          sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 817141239014.dkr.ecr.us-east-1.amazonaws.com'
-          sh 'docker push 817141239014.dkr.ecr.us-east-1.amazonaws.com/strapiv4:latest'
+          sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 276304551001.dkr.ecr.ap-south-1.amazonaws.com'
+          sh 'docker push 276304551001.dkr.ecr.ap-south-1.amazonaws.com/strapiv4:latest'
         }
       }
             
@@ -46,7 +46,7 @@ pipeline {
     stage ("Docker run") {
       steps {
         script {
-          sh 'docker run -d -p 1337:1337 --rm --name strapi_container 817141239014.dkr.ecr.us-east-1.amazonaws.com/strapiv4:latest'
+          sh 'docker run -d -p 1337:1337 --rm --name strapi_container 276304551001.dkr.ecr.ap-south-1.amazonaws.com/strapiv4:latest'
         }
       }
     }
