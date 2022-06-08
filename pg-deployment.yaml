@@ -39,7 +39,7 @@ volumeBindingMode: Immediate
 
 
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
  name: postgres
  namespace: strapiv4
@@ -50,7 +50,7 @@ spec:
  selector:
    matchLabels:
      app: postgres
- serviceName: postgres
+# serviceName: postgres
  template:
    metadata:
      labels:
