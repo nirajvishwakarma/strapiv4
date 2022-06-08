@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Secret
+metadata:
+ name: strapi-secret
+ namespace: strapiv4
+type: Opaque
+data:
+  DATABASE_USERNAME: c3RyYXBp 
+  DATABASE_PASSWORD: c3RyYXBp
+
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: strapi-configmap
+ namespace: strapiv4
+data:
+#  DATABASE_CLIENT: 
+#  DATABASE_HOST: "postgres" 
+#  DATABASE_NAME: "strapi"
+#`  DATABASE_PORT: 5432
+  database_url: postgres
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: strapi
+ namespace: strapiv4
+ labels:
+   app: strapi
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+     app: strapi
+ template:
+   metadata:
+     labels:
+       app: strapi
+   spec:
+     containers:
+     - name: strapi
+       image: nirajvishwakarma/wimstrapiv4:latest
+       imagePullPolicy: "Always"
+       ports:
+         - containerPort: 1337
+       envFrom:
+         - configMapRef:
+             name: strapi-configmap
+         - secretRef:
+             name: strapi-secret
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: strapi
+  namespace: strapiv4
+
+spec:
+  ports:
+  - name: strapi
+    port: 1337
+    targetPort: 1337
+
+  selector:
+    app: strapi
+
+  type: LoadBalancer
