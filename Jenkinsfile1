@@ -93,6 +93,8 @@ pipeline {
                       expression { targetK8SCluster == "dev" }
                     }
                     steps {
+                        sh 'aws eks --region ap-south-1 update-kubeconfig --name WIM-prod'
+                        sshCommand remote: remote, command: "kubectl apply -f namespace.yaml"
                         sshCommand remote: remote, command: "kubectl apply -f pg-deployment.yaml"
                     }
                 }
