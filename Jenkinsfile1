@@ -93,10 +93,7 @@ pipeline {
                       expression { targetK8SCluster == "dev" }
                     }
                     steps {
-                        sh 'aws eks --region ap-south-1 update-kubeconfig --name WIM-dev'
-                        kubernetesDeploy(configs: "namespace.yaml", kubeconfigId: "WIM-dev")
-                        kubernetesDeploy(configs: "pg-deployment.yaml", kubeconfigId: "WIM-dev")
-                        kubernetesDeploy(configs: "strapi-deployment.yaml", kubeconfigId: "WIM-dev")
+                        sshCommand remote: remote, command: "kubectl apply -f pg-deployment.yaml"
                     }
                 }
                 stage('deploy to production') {
