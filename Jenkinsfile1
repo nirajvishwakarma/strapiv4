@@ -12,10 +12,10 @@ pipeline {
   
   stages {
 
-    stage("Git Clone"){
+    stage ("checkout") {
       steps {
-        git credentialsId: 'GIT_HUB_CREDENTIALS', url: 'https://github.com/nirajvishwakarma/strapiv4.git'
-      }
+        checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/nirajvishwakarma/strapiv4.git']]])
+       }
     }
 
    
