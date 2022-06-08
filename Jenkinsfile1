@@ -94,7 +94,7 @@ pipeline {
                     }
                     steps {
                         sh 'aws eks --region ap-south-1 update-kubeconfig --name WIM-dev'
-                        sh " kubectl /var/lib/jenkins/.kube/config apply -f pg-deployment.yaml"
+                        sh 'kubectl apply -f pg-deployment.yaml --kubeconfig= ~/.kube/config'
                     }
                 }
                 stage('deploy to production') {
