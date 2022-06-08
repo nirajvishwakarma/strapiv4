@@ -94,7 +94,6 @@ pipeline {
                     steps {
                         sh 'aws eks --region ap-south-1 update-kubeconfig --name WIM-dev'
                         kubernetesDeploy(configs: "namespace.yaml", kubeconfigId: "WIM-dev")
-#                        kubernetesDeploy(configs: "pg-deployment.yaml", kubeconfigId: "WIM-dev")
                         sh "kubectl --kubeconfig=/root/.kube/config -f pg-deployment.yaml"
                         kubernetesDeploy(configs: "strapi-deployment.yaml", kubeconfigId: "WIM-dev")
                     }
