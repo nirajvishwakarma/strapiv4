@@ -17,9 +17,9 @@ metadata:
  namespace: strapiv4
 data:
 #  DATABASE_CLIENT: 
-#  DATABASE_HOST: "postgres" 
-#  DATABASE_NAME: "strapi"
-#`  DATABASE_PORT: 5432
+  DATABASE_HOST: "postgres" 
+  DATABASE_NAME: "strapi"
+  DATABASE_PORT: "5432"
   database_url: postgres
 
 ---
@@ -44,7 +44,7 @@ spec:
    spec:
      containers:
      - name: strapi
-       image: 276304551001.dkr.ecr.ap-south-1.amazonaws.com/strapiv4:latest
+       image: nirajvishwakarma/strapi:v4
        imagePullPolicy: "Always"
        ports:
          - containerPort: 1337
