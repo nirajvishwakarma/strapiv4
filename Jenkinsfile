@@ -96,9 +96,10 @@ pipeline {
                         sh 'aws eks --region ap-south-1 update-kubeconfig --name WIM-dev'
                         sh 'whoami'
                         sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config get ns'
-                        kubernetesDeploy(configs: "namespace.yaml", kubeconfigId: "WIM-dev")
-                        kubernetesDeploy(configs: "pg-deployment.yaml", kubeconfigId: "WIM-dev")
-                        kubernetesDeploy(configs: "strapi-deployment.yaml", kubeconfigId: "WIM-dev")
+                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f namespace.yaml'
+                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config get pg-deployment.yaml'
+                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config get strapi-deployment.yaml'
+
                     }
                 }
                 stage('deploy to production') {
