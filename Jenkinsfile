@@ -97,8 +97,8 @@ pipeline {
                         sh 'whoami'
                         sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config get ns'
                         sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f namespace.yaml'
-                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply pg-deployment.yaml'
-                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply strapi-deployment.yaml'
+                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f pg-deployment.yaml'
+                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f strapi-deployment.yaml'
 
                     }
                 }
