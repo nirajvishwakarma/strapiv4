@@ -60,17 +60,23 @@ pipeline {
           timeout ( time: 2, unit: "HOURS" ) {
             userAns = input(
               message: "Where to deploy to?",
-              parameters: [choice(choices: ['dev', 'sit', 'demo', 'prod'],
+              parameters: [choice(choices: ['dev', 'test', 'demo', 'prod'],
               description: 'k8s env',
               name: 'deployTo')]
             )
           }
 
           switch(userAns) {
-            case ["dev", "sit"]:
+            case ["test"]:
+              targetK8SCluster = "test"
+              break
+            case ["dev"]:
               targetK8SCluster = "dev"
               break
-            case ["demo", "prod"]:
+            case ["demo"]:
+              targetK8SCluster = "demo"
+              break
+            case ["prod"]:
               targetK8SCluster = "prod"
               break
             default:
@@ -87,14 +93,12 @@ pipeline {
     
     stage ('K8S Deploy') {
         parallel {
-                stage('deploy to development') {
+                stage('deploy to test') {
                     when {
-                      expression { targetK8SCluster == "dev" }
+                      expression { targetK8SCluster == "test" }
                     }
                     steps {
-                        sh 'whoami'
-                        sh 'aws eks --region ap-south-1 update-kubeconfig --name WIM-dev'
-                        sh 'whoami'
+                        sh 'aws eks --region ap-south-1 update-kubeconfig --name WIM-test'
                         sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config get ns'
                         sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f namespace.yaml'
                         sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f pg-deployment.yaml'
@@ -102,7 +106,33 @@ pipeline {
 
                     }
                 }
-                stage('deploy to production') {
+                stage('deploy to dev') {
+                    when {
+                      expression { targetK8SCluster == "dev" }
+                    }
+                    steps {
+                        sh 'aws eks --region ap-south-1 update-kubeconfig --name WIM-dev'
+                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config get ns'
+                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f namespace.yaml'
+                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f pg-deployment.yaml'
+                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f strapi-deployment.yaml'
+
+                    }
+                }
+                stage('deploy to demo') {
+                    when {
+                      expression { targetK8SCluster == "demo" }
+                    }
+                    steps {
+                        sh 'aws eks --region ap-south-1 update-kubeconfig --name WIM-demo'
+                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config get ns'
+                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f namespace.yaml'
+                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f pg-deployment.yaml'
+                        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f strapi-deployment.yaml'
+
+                    }
+                }
+                stage('deploy to prod') {
                     when {
                         expression { targetK8SCluster == "prod" }
                     }
