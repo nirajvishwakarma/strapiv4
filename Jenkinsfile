@@ -92,7 +92,9 @@ pipeline {
                       expression { targetK8SCluster == "dev" }
                     }
                     steps {
+                        sh 'whoami'
                         sh 'aws eks --region ap-south-1 update-kubeconfig --name WIM-dev'
+                        sh 'whoami'
                         sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config get ns'
                         kubernetesDeploy(configs: "namespace.yaml", kubeconfigId: "WIM-dev")
                         kubernetesDeploy(configs: "pg-deployment.yaml", kubeconfigId: "WIM-dev")
