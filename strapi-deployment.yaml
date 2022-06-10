@@ -44,7 +44,7 @@ spec:
    spec:
      containers:
      - name: strapi
-       image: 276304551001.dkr.ecr.ap-south-1.amazonaws.com/strapiv4
+       image: 276304551001.dkr.ecr.ap-south-1.amazonaws.com/strapiv4:latest
        imagePullPolicy: "Always"
        ports:
          - containerPort: 1337
